@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { inputs } from "./mock/inputs";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import classNames from "classnames";
+import useDeviceControl from "./hooks/useDeviceControl";
+import { normalizeInputValue } from "./utils/normalizeInputValue";
 
 export default function DeviceControl() {
   const [params, setParams] = useState({
@@ -13,21 +15,13 @@ export default function DeviceControl() {
   const [savedConfigs, setSavedConfigs] = useState(
     JSON.parse(localStorage.getItem("configs")) || {}
   );
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
   const [selectedConfig, setSelectedConfig] = useState("");
+
+  const { loading, sendToDevice } = useDeviceControl();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    let numValue = Number(value);
-
-    if (name === "red" || name === "green" || name === "blue") {
-      numValue = Math.max(0, Math.min(255, numValue));
-    }
-
-    if (name === "shape") {
-      numValue = Math.max(0, Math.min(2, numValue));
-    }
+    const numValue = normalizeInputValue(name, value);
 
     setParams({ ...params, [name]: numValue });
   };
@@ -46,30 +40,13 @@ export default function DeviceControl() {
     setSelectedConfig(name);
   };
 
-  const sendToDevice = () => {
-    setLoading(true);
-
-    const success = Math.random() > 0.2;
-
-    setTimeout(() => {
-      success
-        ? toast.success("Parameters sent successfully!")
-        : toast.error("Failed to send parameters.");
-      setLoading(false);
-    }, 2000);
-
-    setTimeout(() => {
-      setMessage("");
-    }, 2000);
-  };
-
   return (
     <>
       <div className="p-6 text-center">
         <h1 className="text-5xl font-bold mb-4 text-blue-500">
           Device Control
         </h1>
-        <div class="grid lg:grid-cols-2 sm:px-12 md:px-24 lg:px-0 max-w-[1000px] mx-auto mt-16 gap-12">
+        <div className="grid lg:grid-cols-2 sm:px-12 md:px-24 lg:px-0 max-w-[1000px] mx-auto mt-16 gap-12">
           <div className="flex flex-col gap-6 mb-4">
             {inputs.map((input) => (
               <div
@@ -95,7 +72,7 @@ export default function DeviceControl() {
               </div>
             ))}
 
-            <div class="flex gap-2 w-full mt-4 justify-center lg:justify-start">
+            <div className="flex gap-2 w-full mt-4 justify-center lg:justify-start">
               <button
                 onClick={saveConfig}
                 className={classNames(
@@ -120,7 +97,7 @@ export default function DeviceControl() {
                   <svg
                     aria-hidden="true"
                     role="status"
-                    class="inline w-4 h-4 me-3 text-white animate-spin"
+                    className="inline w-4 h-4 me-3 text-white animate-spin"
                     viewBox="0 0 100 101"
                     fill="none"
                   >
@@ -139,30 +116,25 @@ export default function DeviceControl() {
             </div>
           </div>
 
-          <div class="flex flex-col">
+          <div className="flex flex-col">
             <div className="w-full flex justify-center">
               <div
-                style={{
-                  backgroundColor: `rgb(${params.red}, ${params.green}, ${params.blue})`,
-                  clipPath:
-                    params.shape >= 1 && params.shape < 1.7
-                      ? "polygon(50% 0%, 100% 100%, 0% 100%)"
-                      : params.shape > 1.7
-                      ? "circle(50%)"
-                      : "none",
-                }}
                 className={classNames(
-                  "w-full h-[calc(1000px/2-3rem)] transition-all duration-500 ease-in-out",
+                  `w-full h-[calc(1000px/2-3rem)] transition-all duration-500 ease-in-out`,
                   {
-                    "w-[calc(1000px/2-3rem)]": params.shape > 1.7,
+                    "clip-polygon": params.shape >= 1 && params.shape < 1.7,
+                    "clip-circle": params.shape > 1.7,
                   }
                 )}
+                style={{
+                  backgroundColor: `rgb(${params.red}, ${params.green}, ${params.blue})`,
+                }}
               ></div>
             </div>
 
             <div className="mt-4 flex flex-wrap gap-3 items-center">
               <h2 className="text-lg text-left">Saved Configurations:</h2>
-              <div class="flex gap-1 flex-wrap">
+              <div className="flex gap-1 flex-wrap">
                 {Object.keys(savedConfigs).map((name) => (
                   <button
                     key={name}
@@ -179,10 +151,6 @@ export default function DeviceControl() {
                 ))}
               </div>
             </div>
-
-            {message && (
-              <p className="mt-4 font-semibold text-red-500">{message}</p>
-            )}
           </div>
         </div>
       </div>

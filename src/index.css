@@ -30,3 +30,11 @@ input[type="range"]::-webkit-slider-thumb {
   width: 1.7rem;
   border-radius: 100px;
 }
+
+.clip-polygon {
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+}
+
+.clip-circle {
+  clip-path: circle(50%);
+}
