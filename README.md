@@ -53,8 +53,10 @@ If I had more time, I would improve the project in the following ways:
 
 Integrate with an actual device API to send parameters to real devices.
 
-- Add input validation for RGB and shape values to ensure they're within the correct range.
 - Implement more complex shapes and interactive UI elements.
 - Enhance accessibility with ARIA attributes and better keyboard navigation.
 - Error handling improvements, such as retrying failed requests to the device.
 - UI/UX improvements, including smoother animations and transitions.
+
+Link to design:
+https://www.figma.com/design/FH8hPWmYmcdsUS7ZxkECuQ/Untitled?node-id=0-1&p=f&t=lZq9vSGd5O268cTn-0
