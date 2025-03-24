@@ -29,7 +29,7 @@ git clone https://github.com/rgnatenko/Euveka-Take-home-assignment.git
 cd Euveka-Take-home-assignment
 ```
 
-### 1. Clone the repository
+### 2. Install dependencies
 
 Make sure Node.js is installed, then run the following command to install all dependencies:
 
@@ -42,7 +42,7 @@ npm install
 To start the development server, use:
 
 ```
-npm install
+npm start
 ```
 
 The app will be available at http://localhost:3000 in your browser.
