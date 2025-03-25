@@ -2,7 +2,7 @@ export const inputs = [
   {
     label: "Red",
     name: "red",
-    type: "number",
+    type: "text",
     min: "0",
     max: "255",
     className:
@@ -12,7 +12,7 @@ export const inputs = [
   {
     label: "Green",
     name: "green",
-    type: "number",
+    type: "text",
     min: "0",
     max: "255",
     className:
@@ -22,7 +22,7 @@ export const inputs = [
   {
     label: "Blue",
     name: "blue",
-    type: "number",
+    type: "text",
     min: "0",
     max: "255",
     className:

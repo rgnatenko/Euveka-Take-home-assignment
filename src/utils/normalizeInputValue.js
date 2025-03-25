@@ -1,3 +1,4 @@
+
 export const normalizeInputValue = (name, value) => {
   let numValue = Number(value);
 

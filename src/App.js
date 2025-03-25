@@ -21,6 +21,7 @@ export default function DeviceControl() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     const numValue = normalizeInputValue(name, value);
 
     setParams({ ...params, [name]: numValue });
@@ -32,6 +33,7 @@ export default function DeviceControl() {
       const updatedConfigs = { ...savedConfigs, [name]: params };
       setSavedConfigs(updatedConfigs);
       localStorage.setItem("configs", JSON.stringify(updatedConfigs));
+      setSelectedConfig(name);
     }
   };
 
